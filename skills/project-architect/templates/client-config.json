@@ -1,0 +1,37 @@
+{
+  "client_id": "client-name",
+  "client_name": "Client Display Name",
+  "currency": "USD",
+  "timezone": "America/Puerto_Rico",
+  "integrations": {
+    "quickbooks": {
+      "company_id": "",
+      "env_var_token": "QB_ACCESS_TOKEN"
+    },
+    "supabase": {
+      "env_var_url": "SUPABASE_URL",
+      "env_var_key": "SUPABASE_KEY"
+    }
+  },
+  "approval_contact": {
+    "name": "",
+    "email": "",
+    "response_time": "24h"
+  },
+  "approval_thresholds": {
+    "auto_approve_below": 500,
+    "always_require_approval": ["journal_entry", "vendor_payment", "delete"]
+  },
+  "category_rules": {
+    "AMAZON WEB SERVICES": {"category": "Cloud Infrastructure", "account": "6200"},
+    "ADP": {"category": "Payroll Services", "account": "6100"}
+  },
+  "special_rules": [
+    "All transactions over $5000 require partner review"
+  ],
+  "parking_lot_triggers": [
+    "confidence below 0.7",
+    "description is empty",
+    "vendor not in category_rules"
+  ]
+}

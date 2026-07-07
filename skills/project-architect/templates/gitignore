@@ -1,0 +1,56 @@
+# Environment
+.env
+.env.local
+.env.production
+
+# Claude Code personal config
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+
+# Logs (committed structure, not content)
+logs/*.json
+logs/*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if applicable)
+node_modules/
+npm-debug.log
+
+# Test artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Docker
+docker-compose.override.yml
+
+# Git worktrees for parallel sessions (live outside the repo; ignored as a safety net)
+*-wt/
+.worktrees/
+
+# Graphify code knowledge graph (regenerated locally with /graphify .)
+graphify-out/
+
+# Obsidian workspace state (keep the notes, ignore per-machine UI state)
+memory/.obsidian/workspace*
+memory/.obsidian/cache
