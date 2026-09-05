@@ -19,7 +19,7 @@ Try in order, use the first CLI that exists (`which <cli>`):
    cd "$(mktemp -d)" && cursor-agent -p "<review prompt with diff inline>" --model gpt-5 --output-format text
    ```
    Run from an empty temp dir with the diff INLINE in the prompt — `-p` mode has write+bash access, so never point it at the repo. Model availability depends on the Cursor subscription (`cursor-agent --help` lists examples).
-2. **`codex exec "<prompt>"`** — OpenAI Codex CLI (`~/.codex/auth.json` already exists on this machine; install with `npm i -g @openai/codex`).
+2. **`codex exec -m gpt-5.6-sol -s workspace-write review --base <branch> "<adversarial instructions>"`** — OpenAI Codex CLI (installed 2026-08-27, v0.150.1). `review` reads the repo diff itself, no need to inline the patch. Always pass `-m`: the configured `gpt-5-codex` is dead for ChatGPT accounts. Options go BEFORE the subcommand. `--full-auto` does not exist.
 3. **`gemini -p "<prompt>"`** — Gemini CLI.
 4. **Fallback**: Claude `haiku` subagent with fresh context — and record in the MISSION.md log that provider diversity was NOT achieved for this milestone. Never silently fake independence.
 
