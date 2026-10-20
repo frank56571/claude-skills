@@ -8,6 +8,10 @@ Three Claude Code skills for scaffolding, running, and cross-checking larger pro
 | **mission-control** | `/mission-control` | Runs long, multi-feature work as an orchestrated agent team: contract-first validation, serial workers, adversarial validators, evidence-before-merge. User-invoked only. |
 | **codex-loop** | `/codex-loop` | Tandem loop with the OpenAI Codex CLI: Claude plans, Codex implements, Claude reviews the git diff, Codex fixes, then both run a blind adversarial review on the same diff. Git is the contract; max two fix rounds before escalating to you. |
 
+## Docs
+
+- [`/new-project` — guía de uso](docs/new-project.md) (en español): instalación, la entrevista, qué genera, el día a día con `/next` · `/verify` · `/direction`, agentes adversarios, seguridad (DeepSec), memoria y modos de paralelización.
+
 ## Layout
 
 This repo mirrors `~/.claude/`, so installing is a copy:
