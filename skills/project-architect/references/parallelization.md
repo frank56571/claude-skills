@@ -25,20 +25,22 @@ block in `templates/claude-md.md`).
 
 ## 2. Pick a parallelization mode
 
-The `/new-project` interview asks how the owner wants to parallelize. Two modes:
+The `/new-project` interview asks how the owner wants to parallelize. Three modes:
 
-| | **Single instance** | **Multiple instances** |
-|---|---|---|
-| What | One Claude session using subagents / a Workflow | Several Claude sessions, one per task |
-| Isolation | Shared context, in-process | **git worktrees** — one working copy per branch |
-| Best for | Tasks that share context, need a coordinator, or fan-out+synthesize | Independent tracks (frontend vs backend, 3 unrelated features) that run for a while |
-| Conflict risk | None (one working tree) | Zero if worktrees + clear file ownership; high if same checkout |
-| Cost | Cheapest | More disk + you drive N sessions |
+| | **Single instance** | **Multiple instances** | **Orchestrated** |
+|---|---|---|---|
+| What | One Claude session using subagents / a Workflow | Several Claude sessions, one per task | Agent team on a self-generated MCP task board |
+| Isolation | Shared context, in-process | **git worktrees** — one working copy per branch | Worktrees per worker seat + file scopes enforced by the board server |
+| Task list | Ad hoc | Static, pre-written prompts | **Dynamic** — orchestrator creates, workers claim at runtime |
+| Best for | Tasks that share context, need a coordinator, or fan-out+synthesize | Independent tracks (frontend vs backend, 3 unrelated features) that run for a while | Evolving multi-track work with live coordination + red-flag screening |
+| Conflict risk | None (one working tree) | Zero if worktrees + clear file ownership; high if same checkout | Zero — the board **rejects** overlapping file scopes deterministically |
+| Cost | Cheapest | More disk + you drive N sessions | Multiple-instances cost + orchestrator terminal |
 
 Rule of thumb: **shared context or short fan-out → single instance. Long,
 independent tracks a human wants to run in separate terminals → multiple
-instances with worktrees.** When unsure, default to single instance — it's
-cheaper and you can always split out later.
+instances with worktrees. Dynamic task flow where tracks appear/change as work
+progresses → orchestrated (see `references/orchestration.md`).** When unsure,
+default to single instance — it's cheaper and you can always split out later.
 
 ---
 
@@ -137,6 +139,11 @@ Do not merge — a human merges after review.
 
 Fill every `<placeholder>` with real values from the project. If the owner also
 wants the prompts in chat, print the same content after writing the file.
+
+**Orchestrated mode** builds on the same worktree mechanics but replaces the
+static prompt file with a dynamic task board (`coordination/`) — see
+`references/orchestration.md`. No `tasks/parallel-prompts.md` is generated in
+that mode.
 
 ---
 

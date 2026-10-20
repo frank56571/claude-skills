@@ -48,9 +48,25 @@ docker-compose.override.yml
 *-wt/
 .worktrees/
 
+# Orchestrated-mode board state (runtime, regenerated — the .py files stay tracked)
+coordination/board.json
+coordination/board.json.bak
+coordination/handoffs/
+coordination/DASHBOARD.md
+coordination/.board.lock
+
 # Graphify code knowledge graph (regenerated locally with /graphify .)
 graphify-out/
 
-# Obsidian workspace state (keep the notes, ignore per-machine UI state)
-memory/.obsidian/workspace*
-memory/.obsidian/cache
+# Obsidian workspace state (keep the notes, ignore per-machine UI state).
+# The authored vault is central (~/SecondBrain/) and has its own .gitignore;
+# this covers the vault graphify emits under graphify-out/obsidian/.
+.obsidian/workspace*
+.obsidian/cache
+
+# DeepSec state + findings (absolute paths, raw vulnerability details).
+# Findings are an exploit list — never commit them.
+.deepsec/data/
+.deepsec/node_modules/
+.deepsec/findings/
+findings/

@@ -22,6 +22,8 @@ The default way you work on this project. (Boris Cherny's CLAUDE.md operating sy
 
 ## ✅ Task Management
 
+**`/next` drives this project.** At the start of a work session, if the owner hasn't named a task, run `/next`: it reads `## Estado` in the vault + `tasks/todo.md` + `git status`, ranks what matters (P0 → whatever unblocks the most items → P1 → P2), and proposes the move with its reasoning. It **waits for confirmation** before building. `/verify` runs the three-lens review barrier on the diff before anything is called done — `/next` invokes it automatically, and the owner can run it standalone on finished work. `/direction` checks the code against `specs/` and reports drift (scorecard + unplanned work) — run it before a release and every few merged features. Volume shipped is not progress; direction is.
+
 1. **Plan First** — Write the plan to `tasks/todo.md` as checkable items before coding.
 2. **Verify Plan** — Check in with the owner before starting implementation.
 3. **Track Progress** — Mark items complete in `tasks/todo.md` as you go.
@@ -34,12 +36,14 @@ The default way you work on this project. (Boris Cherny's CLAUDE.md operating sy
 
 ## 🧠 Knowledge & Memory — read FIRST, it saves context
 
-Two layers. Hit them *before* grepping or reading many files — that is the whole point of having them.
+Three layers. Hit them *before* grepping, reading many files, or guessing at an external contract — that is the whole point of having them.
 
 - **Memory vault (the *why*)** → central Obsidian second brain at `~/SecondBrain/projects/{PROJECT_SLUG}/`. Read its `MEMORY.md` at the start of work: decisions, domain glossary, ongoing context, gotchas, lessons. When you learn something non-obvious (a decision, a gotcha, a correction), add a one-fact note under `decisions/`, `domain/`, `context/`, or `reference/`, link it with `[[wikilinks]]`, and add a pointer line in `MEMORY.md`. Shared across every session and cwd — memory is never lost.
 - **Code graph (the *what connects to what*)** → Graphify. For any "where is X used / how does this flow / what touches Y" question, run `/graphify query "…"` FIRST instead of reading files. Rebuild with `/graphify . --update` after structural changes. `graphify-out/` is gitignored — regenerate on a fresh clone with `/graphify . --obsidian`.
 
-Rule of thumb: **code/architecture question → graphify query first. "Why / what's the plan / what does this term mean" → read the vault first.**
+- **Research notebook (what the *external source* says)** → NotebookLM. API contracts, specs, vendor limits, docs and videos this project depends on but did not write. Notebook UUID is in `~/SecondBrain/projects/{PROJECT_SLUG}/reference/notebook.md`. Query it with `notebook_query` **before** designing against an external contract, and cite what it returns. New doc or spec comes up mid-build → `source_add` it instead of skimming it again next week.
+
+Rule of thumb: **code/architecture question → graphify query first. "Why / what's the plan / what does this term mean" → read the vault first. "What does the source actually say" → query the notebook, don't guess.**
 
 ---
 
@@ -59,6 +63,15 @@ Before hand-rolling a capability that is probably common (testing, deploy, desig
 - `*-wt/` and `.worktrees/` are gitignored.
 
 ---
+
+<!-- ───── INCLUDE ONLY when Q10 = orchestrated. Delete this whole section otherwise. ───── -->
+## 🎛️ Orchestrated Mode
+
+- Board tools (`create_task`, `claim_task`, `get_task_status`, …) come from `.mcp.json` (`coordination/board_server.py`); state lives in `coordination/` (regenerated, gitignored).
+- Terminal 1 runs `/orchestrate` (plans, reviews handoffs, closes tasks — never writes code); workers run `/worker` in their own worktrees.
+- **Never edit files outside your claimed task's `file_scope`** — the board rejects overlap; raise a flag if you need a file you don't own.
+- Full mechanics + iron rules: `.claude/commands/orchestrate.md` and `worker.md`.
+<!-- ───── end orchestrated section ───── -->
 
 <!-- ───── INCLUDE ONLY for agent/team projects with staged delivery (Step 1 Q9 = yes). Delete this whole section otherwise. ───── -->
 ## 🚦 Delivery Workflow — SAW Level-1 Contract
@@ -93,6 +106,16 @@ When a change IS gated:
 - Immutable data by default — return new objects, never mutate.
 - Many small files over few large ones (200–400 lines typical, 800 hard max).
 - {CATEGORY_SPECIFIC_RULE}
+
+## 🚫 Must-Not-Trade-Off
+What this project never gives up, whatever the deadline. Every rule names its check — a rule with no check is a wish.
+- {RULE} — checked by `{TEST_PATH_OR_COMMAND}`
+
+**Critical zones** (full `/verify` + tests on every change; slop is not accepted here): {CRITICAL_ZONES — e.g. auth, payments, user data}. Outside them, speed is allowed. Run `/security-review` after finishing each feature, not only before deploy.
+<!-- INCLUDE ONLY when Q13 = deepsec. --> Deeper scan: `cd .deepsec && pnpm deepsec process --diff main` on every change to a critical zone (exit 1 = new finding → triage before merge). Every DeepSec run is cost-capped; `.deepsec/data/` and findings are never committed.
+
+<!-- ───── INCLUDE ONLY the agents this project shipped. ───── -->
+**Adversaries:** `breaker` agent tries to break the app on an isolated data copy — every confirmed break becomes a regression test. `first-user` agent uses the app through the browser only, as a newcomer. Journey suite (`tests/e2e/`, results in `tests/e2e/journeys.json`) runs before every ship.
 
 ## Gotchas
 - {Add gotchas as they are discovered — and mirror durable ones into the memory vault}

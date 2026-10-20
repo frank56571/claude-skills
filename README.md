@@ -4,7 +4,7 @@ Three Claude Code skills for scaffolding, running, and cross-checking larger pro
 
 | Skill | Command | What it does |
 |-------|---------|--------------|
-| **new-project** | `/new-project` | Interviews you, picks a battle-tested framework for the project type, and scaffolds a full repo: real code, passing smoke test, git + branch/PR flow, typed config, and a persistent knowledge layer (Obsidian memory vault + Graphify code graph). Backed by the `project-architect` skill. |
+| **new-project** | `/new-project` | Interviews you, picks a battle-tested framework for the project type, and scaffolds a full repo: real code, passing smoke test, git + branch/PR flow, typed config, and a persistent knowledge layer (Obsidian memory vault + Graphify code graph + optional NotebookLM notebook). Every project also ships a companion (`/next`), a three-lens review barrier (`/verify`), a drift check against `specs/` (`/direction`), Must-Not-Trade-Off rules with a check each, adversarial `breaker` / `first-user` agents, and an opt-in, cost-capped [DeepSec](https://github.com/vercel-labs/deepsec) security layer. Backed by the `project-architect` skill. |
 | **mission-control** | `/mission-control` | Runs long, multi-feature work as an orchestrated agent team: contract-first validation, serial workers, adversarial validators, evidence-before-merge. User-invoked only. |
 | **codex-loop** | `/codex-loop` | Tandem loop with the OpenAI Codex CLI: Claude plans, Codex implements, Claude reviews the git diff, Codex fixes, then both run a blind adversarial review on the same diff. Git is the contract; max two fix rounds before escalating to you. |
 

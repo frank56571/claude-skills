@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "board": {
+      "command": "uv",
+      "args": ["run", "--script", "coordination/board_server.py"]
+    }
+  }
+}
